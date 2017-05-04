@@ -19,6 +19,7 @@
 #include <time.h>
 
 #include "make_graph.h"
+#include "writesnap.h"
 
 inline double get_time() {
   struct timeval tv;
@@ -42,7 +43,10 @@ int main(int argc, char* argv[]) {
   /* End of graph generation timing */
 
   fprintf(stderr, "%" PRIu64 " edge%s generated in %fs (%f Medges/s)\n", nedges, (nedges == 1 ? "" : "s"), time_taken, 1. * nedges / time_taken * 1.e-6);
-
+  start = get_time();
+  WriteSnap(result, nedges, argv[2]);
+  time_taken = get_time() - start;
+  fprintf(stderr, "%" PRIu64 " edge%s written in %fs (%f Medges/s)\n", nedges, (nedges == 1 ? "" : "s"), time_taken, 1. * nedges / time_taken * 1.e-6);
   free(result);
 
   return 0;
